@@ -1,11 +1,28 @@
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+const BUSSTOP_URL = "https://arrivelah2.busrouter.sg/?id=83139";
 
 export default function App() {
+
+  const [loading, setloading]= useState(true);
+
+  function loadBusStopData() {
+    fetch(BUSSTOP_URL)
+    .then((response)=>response.json())
+    .then((responseData)=>console.log(responseData));
+  }
+
+  useEffect(() => {
+  loadBusStopData();  
+  }, []);
+
  return (
    <View style={styles.container}>
      <Text style={styles.title}>Bus arriving in</Text>
-     <Text style={styles.arrivalTime}>Loading...</Text>
+     <Text style={styles.arrivalTime}>
+       {loading ? <ActivityIndicator size="large"/> : "loaded"} 
+       </Text>
      <TouchableOpacity style={styles.button}>
        <Text style={styles.buttonText}>Refresh!</Text>
      </TouchableOpacity>
